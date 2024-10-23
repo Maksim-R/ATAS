@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ATAS;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -20,7 +21,7 @@ class FormFillTest
         wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 
         // Открытие страницы
-        driver.Navigate().GoToUrl("https://my.trade-with.me/cart?id=26&lang=de");
+        driver.Navigate().GoToUrl(Tariff.MoexPromo.Id49);
 
         // Увеличиваем окно браузера, чтобы избежать проблем с видимостью элементов
         driver.Manage().Window.Maximize();
