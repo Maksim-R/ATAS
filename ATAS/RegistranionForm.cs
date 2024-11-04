@@ -53,7 +53,7 @@ public class FormFillTest // Тест на заполнение формы
         // Ввод Email
         IWebElement emailInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__email input[type=text]")));
         emailInput.SendKeys(User.EmailPostfix);
-
+    
         // Ввод индекса телефонного кода страны
         IWebElement countryCodeSelect = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__country-code")));
         countryCodeSelect.Click();
@@ -80,7 +80,7 @@ public class FormFillTest // Тест на заполнение формы
 
         // Клик на кнопке продолжить
         IWebElement continueButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__continue")));
-        continueButton.Click();
+        continueButton.Click();      
     }
 
     [TearDown]
