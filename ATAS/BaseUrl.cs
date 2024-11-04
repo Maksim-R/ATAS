@@ -1,7 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ATAS
 {
+    public static class BaseUrl
+    {
+        // Базовые ссылки 
+        public static class Tariff
+        {
+            public static string Tariffs => "https://my.trade-with.me/";
+        }
+        
+    }
+
     public static class Tariff
     {
         // Global Standart Tariffs
