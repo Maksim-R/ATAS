@@ -12,6 +12,8 @@ namespace ATAS
         public static class Tariff
         {
             public static string Tariffs => "https://my.trade-with.me/";
+
+            public static string currentUrl => "https://my.trade-with.me/download#wizard";
         }
         
     }

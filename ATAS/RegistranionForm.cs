@@ -47,14 +47,10 @@ public class FormFillTest // Тест на заполнение формы
         IWebElement nameInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__name input[type=text]")));
         nameInput.SendKeys(UserRu.Name);
 
-        //// Клик на чекбокс Агриментов
-        //IWebElement checkbox = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__agreement-checkbox--main")));
-        //checkbox.Click();
-
         // Ввод Email
         IWebElement emailInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__email input[type=text]")));
-        emailInput.SendKeys(UserRu.EmailPostfix);
-    
+        emailInput.SendKeys(UserRu.EmailPostfix); // Используем текущий EmailPostfix
+
         // Ввод индекса телефонного кода страны
         IWebElement countryCodeSelect = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__country-code")));
         countryCodeSelect.Click();
@@ -63,25 +59,20 @@ public class FormFillTest // Тест на заполнение формы
         IWebElement phoneInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__item-phone input[type=text]")));
         phoneInput.SendKeys(UserRu.Phone);
 
-        // Ожидание и получение списка чекбоксов
-        IList<IWebElement> checkboxes = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.CssSelector(".registration-form__agreement-checkbox > .n-checkbox-box-wrapper")));
-
-        // Проверка, что список не пуст и содержит хотя бы два элемента
-        if (checkboxes.Count >= 2)
-        {
-            // Выбор второго чекбокса
-            IWebElement secondCheckbox = checkboxes[1]; // Использование индекса 1 для доступа к второму элементу
-            secondCheckbox.Click();
-        }
-        else
-        {
-            // Обработка ситуации, когда нет второго чекбокса
-            Console.WriteLine("Не найдено два чекбокса по указанному селектору.");
-        }
+        // Клик на чекбокс Агриментов
+        IWebElement checkbox = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__agreement-checkbox--main .n-checkbox-box-wrapper")));
+        checkbox.Click();
 
         // Клик на кнопке продолжить
         IWebElement continueButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__continue")));
-        continueButton.Click();      
+        continueButton.Click();
+
+        // Ожидание изменения URL на ожидаемый
+        wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/download#wizard"));
+
+        // Дополнительно можно проверять, что на странице действительно находится элемент, который подтверждает, что переход состоялся
+        IWebElement wizardElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-wizard"))); // Пример элемента, который появляется на странице после перехода
+        Assert.IsTrue(wizardElement.Displayed, "Страница не загружена корректно.");
     }
 
     [TearDown]
@@ -92,11 +83,10 @@ public class FormFillTest // Тест на заполнение формы
     }
 
     // Заглушка для данных пользователя
-    
 }
 
 [TestFixture]
-public class Authorization() // Тест на заполнение формы авторизации
+public class Authorization // Тест на авторизацию после регистрации
 {
     private IWebDriver driver;
     private WebDriverWait wait;
@@ -124,9 +114,9 @@ public class Authorization() // Тест на заполнение формы а
         IWebElement authorizationButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".header__authorization-button")));
         authorizationButton.Click();
 
-        // Ввод логина и пароля
+        // Ввод логина (используем старый email из EmailPostfixOld)
         IWebElement loginInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".n-form-item-blank input[type=text]")));
-        loginInput.SendKeys(UserRu.EmailPostfix);
+        loginInput.SendKeys(UserRu.EmailPostfixOld); // Используем старый email (до регистрации)
 
         // Ввод пароля
         IWebElement passwordInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".authorization-form__password .n-input__input-el")));
@@ -134,7 +124,14 @@ public class Authorization() // Тест на заполнение формы а
 
         // Клик на кнопке входа
         IWebElement loginButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".authorization-form__submit")));
-        loginButton.Click();        
+        loginButton.Click();
+
+        // Ожидание изменения URL на ожидаемый
+        wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/tariffs"));
+
+        // Дополнительно можно проверять, что на странице действительно находится элемент, который подтверждает, что переход состоялся
+        IWebElement wizardElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".header__user-name"))); // Пример элемента, который появляется на странице после перехода
+        Assert.IsTrue(wizardElement.Displayed, "Страница не загружена корректно.");
     }
 
     [TearDown]
@@ -144,4 +141,3 @@ public class Authorization() // Тест на заполнение формы а
         driver.Quit();
     }
 }
-

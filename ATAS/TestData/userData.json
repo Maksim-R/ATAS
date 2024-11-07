@@ -1,0 +1,16 @@
+﻿{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "body": "Fixtures are a great way to mock data for responses to routes",
+  "authorizationEmail": "kovalenkoatas@gmail.com",
+  "authorizationPassword": "onzrh",
+  "phone": "9509509505",
+  "phoneCode": "+7",
+  "name": "Ivan",
+  "surname": "Ivanov",
+  "birthDate": "01.01.1990",
+  "country": "Latvia",
+  "city": "New York",
+  "zip": "650000",
+  "address": "1 Katlakalna str., Riga, Latvia, LV-1073",
+  "vatNumber": "40203154738"
+}
