@@ -45,7 +45,7 @@ public class FormFillTest // Тест на заполнение формы
 
         // Ввод имени
         IWebElement nameInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__name input[type=text]")));
-        nameInput.SendKeys(User.Name);
+        nameInput.SendKeys(UserRu.Name);
 
         //// Клик на чекбокс Агриментов
         //IWebElement checkbox = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__agreement-checkbox--main")));
@@ -53,7 +53,7 @@ public class FormFillTest // Тест на заполнение формы
 
         // Ввод Email
         IWebElement emailInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__email input[type=text]")));
-        emailInput.SendKeys(User.EmailPostfix);
+        emailInput.SendKeys(UserRu.EmailPostfix);
     
         // Ввод индекса телефонного кода страны
         IWebElement countryCodeSelect = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__country-code")));
@@ -61,7 +61,7 @@ public class FormFillTest // Тест на заполнение формы
 
         // Ввод номера телефона
         IWebElement phoneInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__item-phone input[type=text]")));
-        phoneInput.SendKeys(User.Phone);
+        phoneInput.SendKeys(UserRu.Phone);
 
         // Ожидание и получение списка чекбоксов
         IList<IWebElement> checkboxes = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.CssSelector(".registration-form__agreement-checkbox > .n-checkbox-box-wrapper")));
@@ -92,14 +92,7 @@ public class FormFillTest // Тест на заполнение формы
     }
 
     // Заглушка для данных пользователя
-    public static class User
-    {
-        public static string EmailPostfix => "123@example.com";
-        public static string IndexPhone => "+7";
-        public static string Phone => "9511234567";
-        public static string Name => "AutotestName";
-        public static string Password => "ae8Pdy70#";
-    }    
+    
 }
 
 [TestFixture]
@@ -133,11 +126,11 @@ public class Authorization() // Тест на заполнение формы а
 
         // Ввод логина и пароля
         IWebElement loginInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".n-form-item-blank input[type=text]")));
-        loginInput.SendKeys(User.EmailPostfix);
+        loginInput.SendKeys(UserRu.EmailPostfix);
 
         // Ввод пароля
         IWebElement passwordInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".authorization-form__password .n-input__input-el")));
-        passwordInput.SendKeys(User.Password);
+        passwordInput.SendKeys(UserRu.Password);
 
         // Клик на кнопке входа
         IWebElement loginButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".authorization-form__submit")));
