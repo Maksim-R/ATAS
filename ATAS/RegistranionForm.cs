@@ -5,6 +5,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
+using static FormFillTest;
 
 [TestFixture]
 public class FormFillTest // Тест на заполнение формы
@@ -86,7 +87,8 @@ public class FormFillTest // Тест на заполнение формы
     [TearDown]
     public void TearDown()
     {
-        // Nothing to do here, browser should not close
+        // Закрытие всех браузерных окон и завершение сессии WebDriver
+        driver.Quit();
     }
 
     // Заглушка для данных пользователя
@@ -96,5 +98,57 @@ public class FormFillTest // Тест на заполнение формы
         public static string IndexPhone => "+7";
         public static string Phone => "9511234567";
         public static string Name => "AutotestName";
+        public static string Password => "ae8Pdy70#";
+    }    
+}
+
+[TestFixture]
+public class Authorization() // Тест на заполнение формы авторизации
+{
+    private IWebDriver driver;
+    private WebDriverWait wait;
+
+    [SetUp]
+    public void SetUp()
+    {
+        // Инициализация драйвера Chrome
+        driver = new ChromeDriver();
+
+        // Установка времени ожидания для элементов
+        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+
+        // Переход по URL, указанному в классе Url
+        driver.Navigate().GoToUrl(BaseUrl.Tariff.Tariffs);
+
+        // Увеличение окна браузера для корректного отображения элементов
+        driver.Manage().Window.Maximize();
+    }
+
+    [Test]
+    public void AuthorizationAfterRegistration()
+    {
+        // Ожидание и клик по кнопке Авторизации
+        IWebElement authorizationButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".header__authorization-button")));
+        authorizationButton.Click();
+
+        // Ввод логина и пароля
+        IWebElement loginInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".n-form-item-blank input[type=text]")));
+        loginInput.SendKeys(User.EmailPostfix);
+
+        // Ввод пароля
+        IWebElement passwordInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".authorization-form__password .n-input__input-el")));
+        passwordInput.SendKeys(User.Password);
+
+        // Клик на кнопке входа
+        IWebElement loginButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".authorization-form__submit")));
+        loginButton.Click();        
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        // Закрытие всех браузерных окон и завершение сессии WebDriver
+        driver.Quit();
     }
 }
+
