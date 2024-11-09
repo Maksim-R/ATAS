@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATAS
+namespace ATAS.Test
 {
     public static class UserRu
     {
