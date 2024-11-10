@@ -1,143 +1,65 @@
-﻿using ATAS;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
+using ATAS.Tests;
 using SeleniumExtras.WaitHelpers;
-using System;
-using static FormFillTest;
 
-[TestFixture]
-public class FormFillTest // Тест на заполнение формы
+namespace ATAS.Tests
 {
-    private IWebDriver driver;
-    private WebDriverWait wait;
-
-    [SetUp]
-    public void SetUp()
+    [TestFixture]
+    public class RegistrationTest : BaseTest
     {
-        // Инициализация драйвера Chrome
-        driver = new ChromeDriver();
+        [Test]
+        public void RegistrationFormTest()
+        {
+            // Переход на страницу тарифов
+            GoToUrl(BaseUrl.Tariff.Tariffs);
 
-        // Установка времени ожидания для элементов
-        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            // Явное ожидание загрузки страницы тарифов
+            wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/tariffs"));
 
-        // Переход по URL, указанному в классе Url
-        driver.Navigate().GoToUrl(BaseUrl.Tariff.Tariffs);
+            // Проверка, что текущий URL соответствует странице тарифов
+            Assert.IsTrue(driver.Url.Contains("https://my.trade-with.me/tariffs"), "Открыта неверная страница для теста авторизации.");
 
-        // Увеличение окна браузера для корректного отображения элементов
-        driver.Manage().Window.Maximize();
-    }
+            // Ожидание и клик по кнопке Авторизации/Регистрации
+            ClickElement(By.CssSelector(".header__authorization-button"));
 
-    [Test]
-    public void RegistrationForm()
-    {
-        // Проверка URL
-        //Assert.IsTrue(driver.Url.Contains("/tariffs"));
+            // Проверка, что кнопка регистрации видна
+            AssertElementIsVisible(By.CssSelector("div[data-name=\"signUp\"]"));
+            ClickElement(By.CssSelector("div[data-name=\"signUp\"]"));
 
-        // Ожидание и клик по кнопке Авторизации/Регистрации
-        IWebElement authorizationButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".header__authorization-button")));
-        authorizationButton.Click();
+            // Проверка заголовка формы регистрации
+            IWebElement registrationTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("div[data-name=\"signUp\"] .n-tabs-tab__label")));
+            Assert.AreEqual("Регистрация", registrationTitle.Text, "Заголовок формы регистрации не совпадает.");
 
-        // Ожидание и клик кнопки регистрация
-        IWebElement signUpButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("div[data-name=\"signUp\"]")));
-        signUpButton.Click();
+            // Проверка наличия поля ввода имени
+            AssertElementIsVisible(By.CssSelector(".registration-form__name input[type=text]"));
 
-        // Ввод имени
-        IWebElement nameInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__name input[type=text]")));
-        nameInput.SendKeys(UserRu.Name);
+            // Ввод имени
+            EnterText(By.CssSelector(".registration-form__name input[type=text]"), userData["name"].ToString());
 
-        // Ввод Email
-        IWebElement emailInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__email input[type=text]")));
-        emailInput.SendKeys(UserRu.EmailPostfix); // Используем текущий EmailPostfix
+            // Проверка наличия поля ввода email
+            AssertElementIsVisible(By.CssSelector(".registration-form__email input[type=text]"));
+            EnterText(By.CssSelector(".registration-form__email input[type=text]"), UserRu.EmailPostfix);
 
-        // Ввод индекса телефонного кода страны
-        IWebElement countryCodeSelect = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__country-code")));
-        countryCodeSelect.Click();
+            // Проверка наличия поля ввода номера телефона
+            AssertElementIsVisible(By.CssSelector(".registration-form__item-phone input[type=text]"));
+            EnterText(By.CssSelector(".registration-form__item-phone input[type=text]"), UserRu.Phone);
 
-        // Ввод номера телефона
-        IWebElement phoneInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__item-phone input[type=text]")));
-        phoneInput.SendKeys(UserRu.Phone);
+            // Принятие условий соглашения
+            AssertElementIsVisible(By.CssSelector(".registration-form__agreement-checkbox--main .n-checkbox-box-wrapper"));
+            ClickElement(By.CssSelector(".registration-form__agreement-checkbox--main .n-checkbox-box-wrapper"));
 
-        // Клик на чекбокс Агриментов
-        IWebElement checkbox = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-form__agreement-checkbox--main .n-checkbox-box-wrapper")));
-        checkbox.Click();
+            // Проверка наличия кнопки продолжить
+            AssertElementIsVisible(By.CssSelector(".registration-form__continue"));
+            ClickElement(By.CssSelector(".registration-form__continue"));
 
-        // Клик на кнопке продолжить
-        IWebElement continueButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".registration-form__continue")));
-        continueButton.Click();
+            // Проверка, что URL изменился на страницу загрузки
+            wait.Until(driver => driver.Url.Contains(BaseUrl.Tariff.currentUrl));
+            Assert.IsTrue(driver.Url.Contains(BaseUrl.Tariff.currentUrl), "Пользователь не перенаправлен на страницу загрузки.");
 
-        // Ожидание изменения URL на ожидаемый
-        wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/download#wizard"));
+            // Проверка наличия элемента на странице загрузки (например, блока с регистрационным мастером)
+            AssertElementIsVisible(By.CssSelector(".registration-wizard"));
+        }
 
-        // Дополнительно можно проверять, что на странице действительно находится элемент, который подтверждает, что переход состоялся
-        IWebElement wizardElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".registration-wizard"))); // Пример элемента, который появляется на странице после перехода
-        Assert.IsTrue(wizardElement.Displayed, "Страница не загружена корректно.");
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        // Закрытие всех браузерных окон и завершение сессии WebDriver
-        driver.Quit();
-    }
-
-    // Заглушка для данных пользователя
-}
-
-[TestFixture]
-public class Authorization // Тест на авторизацию после регистрации
-{
-    private IWebDriver driver;
-    private WebDriverWait wait;
-
-    [SetUp]
-    public void SetUp()
-    {
-        // Инициализация драйвера Chrome
-        driver = new ChromeDriver();
-
-        // Установка времени ожидания для элементов
-        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-
-        // Переход по URL, указанному в классе Url
-        driver.Navigate().GoToUrl(BaseUrl.Tariff.Tariffs);
-
-        // Увеличение окна браузера для корректного отображения элементов
-        driver.Manage().Window.Maximize();
-    }
-
-    [Test]
-    public void AuthorizationAfterRegistration()
-    {
-        // Ожидание и клик по кнопке Авторизации
-        IWebElement authorizationButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".header__authorization-button")));
-        authorizationButton.Click();
-
-        // Ввод логина (используем старый email из EmailPostfixOld)
-        IWebElement loginInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".n-form-item-blank input[type=text]")));
-        loginInput.SendKeys(UserRu.EmailPostfixOld); // Используем старый email (до регистрации)
-
-        // Ввод пароля
-        IWebElement passwordInput = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".authorization-form__password .n-input__input-el")));
-        passwordInput.SendKeys(UserRu.Password);
-
-        // Клик на кнопке входа
-        IWebElement loginButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".authorization-form__submit")));
-        loginButton.Click();
-
-        // Ожидание изменения URL на ожидаемый
-        wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/tariffs"));
-
-        // Дополнительно можно проверять, что на странице действительно находится элемент, который подтверждает, что переход состоялся
-        IWebElement wizardElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".header__user-name"))); // Пример элемента, который появляется на странице после перехода
-        Assert.IsTrue(wizardElement.Displayed, "Страница не загружена корректно.");
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        // Закрытие всех браузерных окон и завершение сессии WebDriver
-        driver.Quit();
     }
 }
