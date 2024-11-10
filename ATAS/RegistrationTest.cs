@@ -59,7 +59,7 @@ namespace ATAS.Tests
 
             // Проверка наличия элемента на странице загрузки (например, блока с регистрационным мастером)
             AssertElementIsVisible(By.CssSelector(".registration-wizard"));
-        }
+        }        
 
     }
 }
