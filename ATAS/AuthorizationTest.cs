@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using ATAS.Tests;
 using SeleniumExtras.WaitHelpers;
+using ATAS.Test;
 
 namespace ATAS.Tests
 {
@@ -12,7 +13,7 @@ namespace ATAS.Tests
         public void AuthorizationAfterRegistrationTest()
         {
             // Переход на страницу тарифов
-            GoToUrl(BaseUrl.Tariff.Tariffs);
+            GoToUrl(BaseUrl.Page.Shop);
 
             // Явное ожидание загрузки страницы тарифов
             wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/tariffs"));

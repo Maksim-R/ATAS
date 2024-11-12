@@ -112,5 +112,19 @@ namespace ATAS.Tests
             IWebElement element = wait.Until(ExpectedConditions.ElementIsVisible(selector));
             Assert.IsTrue(element.Displayed, $"Элемент {selector} не отображается на странице.");
         }
+
+        /// <summary>
+        /// Генерирует случайный адрес электронной почты в домене <c>test@atas.net</c>.
+        /// </summary>
+        /// <returns>Случайный адрес электронной почты в формате <c>abc-test@atas.net</c>, где "abc" — случайная строка длиной 3 символа.</returns>
+        public static string GenerateRandomEmail()
+        {
+            // Генерация случайной строки перед "test@atas.net"
+            string randomPart = Guid.NewGuid().ToString("N").Substring(0, 3); // генерирует строку длиной 3 символа
+            return randomPart + "test@atas.net";
+        }
+
+
+
     }
 }

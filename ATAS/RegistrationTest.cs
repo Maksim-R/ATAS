@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using ATAS.Tests;
 using SeleniumExtras.WaitHelpers;
+using ATAS.Test;
 
 namespace ATAS.Tests
 {
@@ -12,7 +13,7 @@ namespace ATAS.Tests
         public void RegistrationFormTest()
         {
             // Переход на страницу тарифов
-            GoToUrl(BaseUrl.Tariff.Tariffs);
+            GoToUrl(BaseUrl.Page.Shop);
 
             // Явное ожидание загрузки страницы тарифов
             wait.Until(driver => driver.Url.Contains("https://my.trade-with.me/tariffs"));
@@ -54,8 +55,8 @@ namespace ATAS.Tests
             ClickElement(By.CssSelector(".registration-form__continue"));
 
             // Проверка, что URL изменился на страницу загрузки
-            wait.Until(driver => driver.Url.Contains(BaseUrl.Tariff.currentUrl));
-            Assert.IsTrue(driver.Url.Contains(BaseUrl.Tariff.currentUrl), "Пользователь не перенаправлен на страницу загрузки.");
+            wait.Until(driver => driver.Url.Contains(BaseUrl.Page.Wizard));
+            Assert.IsTrue(driver.Url.Contains(BaseUrl.Page.Wizard), "Пользователь не перенаправлен на страницу загрузки.");
 
             // Проверка наличия элемента на странице загрузки (например, блока с регистрационным мастером)
             AssertElementIsVisible(By.CssSelector(".registration-wizard"));
