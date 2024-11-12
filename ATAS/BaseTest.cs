@@ -6,6 +6,7 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using ATAS.Test;
 
 namespace ATAS.Tests
 {
@@ -68,9 +69,14 @@ namespace ATAS.Tests
         /// <summary>
         /// Переходит по указанному URL.
         /// </summary>
-        /// <param name="url">URL для перехода.</param>
+        /// <param name="url">URL для перехода (значение из BaseUrl).</param>
         protected void GoToUrl(string url)
         {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentException("URL не может быть пустым.", nameof(url));
+            }
+
             driver.Navigate().GoToUrl(url);
         }
 
