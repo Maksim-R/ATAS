@@ -1,0 +1,16 @@
+//Italy
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.it@example.com",
+  "authorizationPassword": "password_it",
+  "phone": "12345678",
+  "phoneCode": "+39",
+  "name": "Marco",
+  "surname": "Rossi",
+  "birthDate": "01.01.1990",
+  "country": "Italy",
+  "city": "Rome",
+  "zip": "00100",
+  "address": "Via del Corso, Rome, Italy",
+  "vatNumber": "IT12345678901"
+}

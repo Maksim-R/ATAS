@@ -1,0 +1,16 @@
+//Austria
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.at@example.com",
+  "authorizationPassword": "password_at",
+  "phone": "12345678",
+  "phoneCode": "+43",
+  "name": "Johann",
+  "surname": "M?ller",
+  "birthDate": "01.01.1990",
+  "country": "Austria",
+  "city": "Vienna",
+  "zip": "1010",
+  "address": "Stephansplatz 1, Vienna, Austria",
+  "vatNumber": "ATU12345678"
+}

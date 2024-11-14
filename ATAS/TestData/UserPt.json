@@ -1,0 +1,16 @@
+﻿//Portugal
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.pt@example.com",
+  "authorizationPassword": "password_pt",
+  "phone": "12345678",
+  "phoneCode": "+351",
+  "name": "Ana",
+  "surname": "Silva",
+  "birthDate": "01.01.1990",
+  "country": "Portugal",
+  "city": "Lisbon",
+  "zip": "1000-001",
+  "address": "Praça do Comércio, Lisbon, Portugal",
+  "vatNumber": "PT123456789"
+}

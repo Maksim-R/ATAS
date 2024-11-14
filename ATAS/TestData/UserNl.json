@@ -1,0 +1,16 @@
+//Netherlands
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.nl@example.com",
+  "authorizationPassword": "password_nl",
+  "phone": "12345678",
+  "phoneCode": "+31",
+  "name": "Sven",
+  "surname": "de Vries",
+  "birthDate": "01.01.1990",
+  "country": "Netherlands",
+  "city": "Amsterdam",
+  "zip": "1012",
+  "address": "Dam Square, Amsterdam, Netherlands",
+  "vatNumber": "NL123456789B01"
+}

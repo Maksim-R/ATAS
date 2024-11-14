@@ -1,0 +1,16 @@
+//Belgium
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.be@example.com",
+  "authorizationPassword": "password_be",
+  "phone": "12345678",
+  "phoneCode": "+32",
+  "name": "Marie",
+  "surname": "Dubois",
+  "birthDate": "01.01.1990",
+  "country": "Belgium",
+  "city": "Brussels",
+  "zip": "1000",
+  "address": "Rue de la Loi, Brussels, Belgium",
+  "vatNumber": "BE0123456789"
+}

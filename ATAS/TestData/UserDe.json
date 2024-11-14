@@ -1,0 +1,16 @@
+//Germany
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.de@example.com",
+  "authorizationPassword": "password_de",
+  "phone": "12345678",
+  "phoneCode": "+49",
+  "name": "Hans",
+  "surname": "Schmidt",
+  "birthDate": "01.01.1990",
+  "country": "Germany",
+  "city": "Berlin",
+  "zip": "10115",
+  "address": "Unter den Linden, Berlin, Germany",
+  "vatNumber": "DE123456789"
+}

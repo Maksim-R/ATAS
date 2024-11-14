@@ -1,0 +1,16 @@
+﻿//Spain
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.es@example.com",
+  "authorizationPassword": "password_es",
+  "phone": "12345678",
+  "phoneCode": "+34",
+  "name": "Carlos",
+  "surname": "García",
+  "birthDate": "01.01.1990",
+  "country": "Spain",
+  "city": "Madrid",
+  "zip": "28001",
+  "address": "Calle de Alcalá, Madrid, Spain",
+  "vatNumber": "ESB12345678"
+}

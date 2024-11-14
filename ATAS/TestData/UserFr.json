@@ -1,0 +1,16 @@
+//France
+{
+  "emailPostfix": "_front_e2e@gmail.com",
+  "authorizationEmail": "user.fr@example.com",
+  "authorizationPassword": "password_fr",
+  "phone": "12345678",
+  "phoneCode": "+33",
+  "name": "Jean",
+  "surname": "Dupont",
+  "birthDate": "01.01.1990",
+  "country": "France",
+  "city": "Paris",
+  "zip": "75001",
+  "address": "Rue de Rivoli, Paris, France",
+  "vatNumber": "FR123456789"
+}
