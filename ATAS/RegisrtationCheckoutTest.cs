@@ -17,42 +17,30 @@ namespace ATAS.Tests
 
             string email = GenerateRandomEmail();
 
+            System.Threading.Thread.Sleep(3000);
+
             // Ввод email
             EnterText(By.CssSelector(".cart-contacts__form-email input[type=text]"), email);
 
-            // Ввод кода страны
-            // Найти элемент, в котором отображается код (например, +49)
-            var phoneCodeElement = driver.FindElement(By.CssSelector(".n-base-selection-label"));
+            System.Threading.Thread.Sleep(3000);
+            // Ввод кода страны            
+            EnterText(By.CssSelector(".n-base-selection-input"), "Canada");
 
-            // Кликнуть по элементу, чтобы открыть выпадающий список или редактируемое поле
-            //phoneCodeElement.Click();
+            System.Threading.Thread.Sleep(3000);
+                        
+            // Заполнение контактных данных
+            EnterText(By.CssSelector(".cart-contacts__form-number input[type=text]"), GetUserData("phone"));
+            EnterText(By.CssSelector(".cart-individual__name input[type=text]"), GetUserData("name"));
+            EnterText(By.CssSelector(".cart-individual__surname input[type=text]"), GetUserData("surname"));
+            EnterText(By.CssSelector(".cart-individual__birth-date input[type=text]"), GetUserData("birthDate"));
+            System.Threading.Thread.Sleep(3000);
 
-            //// Найти элемент с новым кодом (+7) и выбрать его
-            //var newCodeElement = driver.FindElement(By.CssSelector("div.n-base-selection-label[title='+7']"));
-            //newCodeElement.Click();
-
-            // Или, если это поле ввода, можно просто ввести новый код:
-            var inputElement = driver.FindElement(By.CssSelector(".n-base-selection-input"));
-            inputElement.Clear();
-            inputElement.SendKeys("Russia");
-
-            //// Пример того, чтобы закрыть выпадающий список или сохранить изменения (если это нужно)
-            //var saveButton = driver.FindElement(By.CssSelector(".some-save-button"));
-            //saveButton.Click(); // Если есть кнопка для подтверждения
-            //ClickElement(By.CssSelector(".cart-contacts__form-code"));
-            //SelectDropdown(By.CssSelector(".cart-contacts__form-code"), "+7" + Keys.Enter);
-
-            //// Заполнение контактных данных
-            //EnterText(By.CssSelector(".cart-contacts__form-number input[type=text]"), GetUserData("phone"));
-            //EnterText(By.CssSelector(".cart-individual__name input[type=text]"), GetUserData("surname"));
-            //EnterText(By.CssSelector(".cart-individual__surname input[type=text]"), GetUserData("surname"));
-            //EnterText(By.CssSelector(".cart-individual__birth-date input[type=text]"), GetUserData("birthDate"));
-
-            //// Заполнение адресных данных
-            //EnterText(By.CssSelector(".cart-address__form-country"), GetUserData("country") + Keys.Enter);
-            //EnterText(By.CssSelector(".cart-address__form-city input[type=text]"), GetUserData("city"));
-            //EnterText(By.CssSelector(".cart-address__form-zip input[type=text]"), GetUserData("zip"));
-            //EnterText(By.CssSelector(".cart-address__form-address input[type=text]"), GetUserData("address"));
+            // Заполнение адресных данных
+            EnterText(By.CssSelector(".cart-address__form-country"), GetUserData("country") + Keys.Enter);
+            EnterText(By.CssSelector(".cart-address__form-city input[type=text]"), GetUserData("city"));
+            EnterText(By.CssSelector(".cart-address__form-zip input[type=text]"), GetUserData("zip"));
+            EnterText(By.CssSelector(".cart-address__form-address input[type=text]"), GetUserData("address"));
+            System.Threading.Thread.Sleep(3000);
 
             //// НДС
             //ClickElement(By.CssSelector(".cart-vat__approval"));

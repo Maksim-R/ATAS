@@ -32,6 +32,9 @@ namespace ATAS.Tests
             // Загрузка данных из файла userData.json
             LoadUserData();
 
+            // Загрузка данных из файла paymentProfilesLv.json
+            //LoadPaymentProfile();
+
             // Увеличение окна браузера для корректного отображения элементов
             driver.Manage().Window.Maximize();
         }
@@ -185,6 +188,7 @@ namespace ATAS.Tests
             IWebElement element = wait.Until(ExpectedConditions.ElementIsVisible(selector));
             element.Clear();
             element.SendKeys(text);
+            element.SendKeys(Keys.Enter);
         }
 
         /// <summary>
