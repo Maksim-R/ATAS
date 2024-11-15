@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.IO;
@@ -14,7 +15,9 @@ namespace ATAS.Tests
     {
         protected IWebDriver driver;
         protected WebDriverWait wait;
-        protected JObject userData;
+        protected JObject? userData;
+        protected JObject? paymentProfiles;
+
 
         /// <summary>
         /// Настройка перед выполнением тестов: инициализация WebDriver, загрузка данных пользователя и настройка окна браузера.
@@ -39,9 +42,11 @@ namespace ATAS.Tests
         [TearDown]
         public void TearDown()
         {
+            // Закрываем браузер и завершаем сессию WebDriver
             if (driver != null)
             {
                 driver.Quit();
+                driver.Dispose();
             }
         }
 
@@ -64,6 +69,86 @@ namespace ATAS.Tests
             {
                 throw new FileNotFoundException($"Не найден файл userData.json по пути: {path}");
             }
+        }
+
+        /// <summary>
+        /// Получает значение из данных пользователя по указанному ключу.
+        /// </summary>
+        /// <param name="key">Ключ для поиска данных пользователя в объекте <c>userData</c>.</param>
+        /// <returns>Возвращает строку, которая является значением для указанного ключа.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Исключение возникает, если <c>userData</c> равно <c>null</c> или если в данных пользователя нет значения для указанного ключа.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Исключение возникает, если <c>key</c> является <c>null</c> или пустой строкой.
+        /// </exception>
+        protected string GetUserData(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key), "Ключ не может быть null или пустым.");
+            }
+
+            // Проверка на null и наличие ключа
+            if (userData == null || userData[key] == null)
+            {
+                throw new InvalidOperationException($"Отсутствуют данные для ключа: {key}");
+            }
+
+            return userData[key]?.ToString() ?? throw new InvalidOperationException($"Не удалось получить значение для ключа: {key}");
+        }
+
+
+        /// <summary>
+        /// Загружает профиль платежных данных из файла <c>paymentProfilesLv.json</c>,
+        /// расположенного в папке <c>PaymentProfiles</c> внутри директории <c>TestData</c>.
+        /// </summary>
+        /// <remarks>
+        /// Метод считывает содержимое файла <c>paymentProfilesLv.json</c> и парсит его в объект <c>JObject</c>.
+        /// </remarks>
+        /// <exception cref="FileNotFoundException">
+        /// Возникает, если файл <c>paymentProfilesLv.json</c> не найден по указанному пути.
+        /// </exception>
+        protected void LoadPaymentProfile()
+        {
+            // Путь к файлу относительно базовой директории проекта
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "PaymentProfiles", "paymentProfilesLv.json");
+
+            if (File.Exists(path))
+            {
+                paymentProfiles = JObject.Parse(File.ReadAllText(path));
+            }
+            else
+            {
+                throw new FileNotFoundException($"Не найден файл paymentProfilesLv.json по пути: {path}");
+            }
+        }
+
+        /// <summary>
+        /// Получает профиль платежных данных по ключу из объекта <c>paymentProfiles</c>.
+        /// </summary>
+        /// <param name="key">Ключ для поиска данных в профиле платежей.</param>
+        /// <returns>Возвращает строку, которая является значением для указанного ключа в профиле платежей.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Исключение возникает, если <c>paymentProfiles</c> равно <c>null</c> или если в профиле платежей нет значения для указанного ключа.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Исключение возникает, если <c>key</c> является <c>null</c> или пустой строкой.
+        /// </exception>
+        protected string GetPaymentProfileData(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key), "Ключ не может быть null или пустым.");
+            }
+
+            // Проверка на null и наличие ключа
+            if (paymentProfiles == null || paymentProfiles[key] == null)
+            {
+                throw new InvalidOperationException($"Отсутствуют данные для ключа: {key} в профиле платежей.");
+            }
+
+            return paymentProfiles[key]?.ToString() ?? throw new InvalidOperationException($"Не удалось получить значение для ключа: {key} в профиле платежей.");
         }
 
         /// <summary>
@@ -124,7 +209,39 @@ namespace ATAS.Tests
             return randomPart + "test@atas.net";
         }
 
+        /// <summary>
+        /// Выбирает значение из выпадающего списка по его селектору.
+        /// </summary>
+        /// <param name="selector">Селектор элемента выпадающего списка.</param>
+        /// <param name="optionText">Текст, который необходимо выбрать из списка.</param>
+        protected void SelectDropdown(By selector, string optionText)
+        {
+            // Ожидаем, что элемент станет доступным для взаимодействия
+            IWebElement dropdownElement = wait.Until(ExpectedConditions.ElementIsVisible(selector));
 
+            // Создаем объект SelectElement для работы с выпадающим списком
+            var selectElement = new OpenQA.Selenium.Support.UI.SelectElement(dropdownElement);
+
+            // Выбираем элемент по тексту
+            selectElement.SelectByText(optionText);
+        }
+
+        /// <summary>
+        /// Подтверждает OTP-код, введя его в соответствующее поле.
+        /// </summary>
+        protected void ConfirmOTP()
+        {
+            // Предполагаем, что код OTP был отправлен и его нужно ввести в поле
+            // Найдите поле для ввода OTP, например:
+            IWebElement otpField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".otp-input")));
+
+            // Введите OTP, например "123456" (можно заменить на динамическое получение кода)
+            otpField.SendKeys("123456");
+
+            // Если есть кнопка подтверждения OTP, кликаем по ней
+            IWebElement confirmButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(".otp-confirm-button")));
+            confirmButton.Click();
+        }
 
     }
 }

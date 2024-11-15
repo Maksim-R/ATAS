@@ -1,0 +1,9 @@
+﻿{
+  "cardLatvianBank": {
+    "url": "https://demo.ipsp.lv/form/v2/en/secure_payment",
+    "number": "4012000000020006",
+    "cvc": "123",
+    "date": "1026",
+    "name": "test"
+  }
+}
