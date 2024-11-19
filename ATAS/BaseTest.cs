@@ -186,9 +186,9 @@ namespace ATAS.Tests
         protected void EnterText(By selector, string text)
         {
             IWebElement element = wait.Until(ExpectedConditions.ElementIsVisible(selector));
+            element = wait.Until(ExpectedConditions.ElementToBeClickable(selector));
             element.Clear();
             element.SendKeys(text);
-            element.SendKeys(Keys.Enter);
         }
 
         /// <summary>
@@ -214,20 +214,54 @@ namespace ATAS.Tests
         }
 
         /// <summary>
-        /// Выбирает значение из выпадающего списка по его селектору.
+        /// Выбирает значение в нестандартном выпадающем списке на основе заданных селекторов.
         /// </summary>
-        /// <param name="selector">Селектор элемента выпадающего списка.</param>
-        /// <param name="optionText">Текст, который необходимо выбрать из списка.</param>
-        protected void SelectDropdown(By selector, string optionText)
+        /// <param name="dropdownSelector">
+        /// Селектор выпадающего списка, по которому будет выполнен клик для открытия.
+        /// </param>
+        /// <param name="inputFieldSelector">
+        /// Селектор текстового поля, связанного с выпадающим списком, для ввода значения.
+        /// </param>
+        /// <param name="optionText">
+        /// Текст значения, который нужно выбрать в выпадающем списке.
+        /// </param>
+        /// <remarks>
+        /// Метод обрабатывает случаи, когда элемент текстового поля отключен или доступен только для чтения
+        /// (атрибуты <c>disabled</c> или <c>readonly</c>). В таких случаях выполнение метода будет пропущено,
+        /// а управление перейдет к следующему полю.
+        /// </remarks>
+        /// <exception cref="WebDriverTimeoutException">
+        /// Выбрасывается, если указанные элементы не появляются в течение времени ожидания.
+        /// </exception>
+        /// <example>
+        /// Пример использования метода:
+        /// <code>
+        /// SelectDropdown(
+        ///     By.CssSelector(".cart-address__form-country"),
+        ///     By.CssSelector(".cart-address__form-country .n-base-selection-input"),
+        ///     "Nepal"
+        /// );
+        /// </code>
+        /// </example>
+        protected void SelectDropdown(By dropdownSelector, By inputFieldSelector, string optionText)
         {
-            // Ожидаем, что элемент станет доступным для взаимодействия
-            IWebElement dropdownElement = wait.Until(ExpectedConditions.ElementIsVisible(selector));
+            // Ожидаем, что элемент выпадающего списка доступен для клика
+            IWebElement dropdownElement = wait.Until(ExpectedConditions.ElementToBeClickable(dropdownSelector));
+            dropdownElement.Click(); // Открываем выпадающий список
 
-            // Создаем объект SelectElement для работы с выпадающим списком
-            var selectElement = new OpenQA.Selenium.Support.UI.SelectElement(dropdownElement);
+            // Проверяем наличие поля для ввода
+            IWebElement inputField = wait.Until(ExpectedConditions.ElementExists(inputFieldSelector));
 
-            // Выбираем элемент по тексту
-            selectElement.SelectByText(optionText);
+            // Если поле отключено, пропускаем заполнение
+            if (!inputField.Enabled || inputField.GetAttribute("readonly") == "true")
+            {
+                Console.WriteLine($"Поле {inputFieldSelector} отключено. Пропускаем заполнение.");
+                return;
+            }
+
+            // Вводим текст и подтверждаем выбор клавишей Enter
+            inputField.SendKeys(optionText);
+            inputField.SendKeys(Keys.Enter);
         }
 
         /// <summary>
