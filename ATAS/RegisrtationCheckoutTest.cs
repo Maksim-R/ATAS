@@ -19,7 +19,7 @@ namespace ATAS.Tests
 
             string email = GenerateRandomEmail();
 
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(4000);
 
             // Ввод email
             EnterText(By.CssSelector(".cart-contacts__form-email input[type=text]"), email);
@@ -38,17 +38,16 @@ namespace ATAS.Tests
             System.Threading.Thread.Sleep(2000);
 
             // Заполнение адресных данных           
-            SelectDropdown(By.CssSelector(".cart-address__form-country .n-base-selection-input"), GetUserData("country"));
-            EnterText(By.CssSelector(".cart-address__form-country"), GetUserData("country") + Keys.Enter);
+            EnterText(By.CssSelector(".cart-address__form-country .n-base-selection-input"), GetUserData("country") + Keys.Enter);
             EnterText(By.CssSelector(".cart-address__form-city input[type=text]"), GetUserData("city"));
             EnterText(By.CssSelector(".cart-address__form-zip input[type=text]"), GetUserData("zip"));
             EnterText(By.CssSelector(".cart-address__form-address input[type=text]"), GetUserData("address"));
             System.Threading.Thread.Sleep(2000);
 
             // НДС
-            ClickElement(By.CssSelector(".cart-vat__approval"));
-            EnterText(By.CssSelector(".cart-vat__number input[type=text]"), GetUserData("vatNumber"));
-            ClickElement(By.CssSelector(".cart-vat__button"));
+            ClickElement(By.CssSelector(".payment-address__vat-number .n-checkbox-box-wrapper"));
+            EnterText(By.CssSelector(".payment-address__vat-number .n-input__input-el"), GetUserData("vatNumber")+ Keys.Enter);
+            //ClickElement(By.CssSelector(".cart-vat__button"));
 
             //// Согласие с условиями
             //ClickElement(By.CssSelector(".cart-agreement__checkbox--first"));

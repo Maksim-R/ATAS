@@ -40,7 +40,7 @@ namespace ATAS.Tests
 
             // Проверка наличия поля ввода email
             AssertElementIsVisible(By.CssSelector(".registration-form__email input[type=text]"));
-            EnterText(By.CssSelector(".registration-form__email input[type=text]"), UserRu.EmailPostfix);
+            EnterText(By.CssSelector(".registration-form__email input[type=text]"), userData["name"].ToString());
 
             // Проверка наличия поля ввода номера телефона
             AssertElementIsVisible(By.CssSelector(".registration-form__item-phone input[type=text]"));
